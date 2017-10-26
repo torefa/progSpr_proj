@@ -8,10 +8,8 @@ object Bank {
     to.deposit(amount)
   }
 
-  def getUniqueId: Int = {
-    this.synchronized {
-      idCounter += 1 //improved by synchronizing the section that increments the id-counter.
-    }
+  def getUniqueId: Int = synchronized {
+    idCounter += 1 //improved by synchronizing the method.
     idCounter
   }
 
