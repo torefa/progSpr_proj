@@ -11,27 +11,27 @@ class TransactionQueue {
 
   // Remove and return the first element from the queue
   def pop: Transaction = synchronized {
-    queue.dequeue
+    queue dequeue
   }
 
   // Return whether the queue is empty
   def isEmpty: Boolean = {
-    queue.isEmpty
+    queue isEmpty
   }
 
   // Add new element to the back of the queue
   def push(t: Transaction): Unit = synchronized {
-    queue.enqueue(t)
+    queue enqueue t
   }
 
   // Return the first element from the queue without removing it
   def peek: Transaction = {
-    queue.front
+    queue front
   }
 
   // Return an iterator to allow you to iterate over the queue
   def iterator: Iterator[Transaction] = {
-    queue.iterator
+    queue iterator
   }
 }
 
