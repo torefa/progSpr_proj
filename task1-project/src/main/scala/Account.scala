@@ -1,6 +1,4 @@
-
-import exceptions.NoSufficientFundsException
-import exceptions.IllegalAmountException
+import exceptions._
 
 class Account(initialBalance: Double, val uid: Int = Bank getUniqueId) {
 
