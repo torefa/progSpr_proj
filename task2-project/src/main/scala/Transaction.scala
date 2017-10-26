@@ -7,11 +7,15 @@ object TransactionStatus extends Enumeration {
 
 class TransactionQueue {
 
+  val queue = Queue()
+
   // Remove and return the first element from the queue
-  def pop: Transaction = ???
+  def pop: Transaction = {
+    queue.dequeue
+  }
 
   // Return whether the queue is empty
-  def isEmpty: Boolean = ???
+  def isEmpty: Boolean = 
 
   // Add new element to the back of the queue
   def push(t: Transaction): Unit = ???
