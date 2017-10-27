@@ -22,7 +22,7 @@ class Account(val bank: Bank, initialBalance: Double) {
     }
   }
 
-  def getBalanceAmount: Double = { balance.amount }
+  def getBalanceAmount: Double = synchronized { balance.amount }
 
   def transferTo(account: Account, amount: Double) = {
     bank addTransactionToQueue (this, account, amount)

@@ -19,5 +19,5 @@ class Account(initialBalance: Double, val uid: Int = Bank getUniqueId) {
     }
   }
 
-  def getBalanceAmount: Double = { balance }
+  def getBalanceAmount: Double = synchronized { balance }
 }

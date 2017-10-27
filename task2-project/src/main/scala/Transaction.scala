@@ -15,7 +15,7 @@ class TransactionQueue {
   }
 
   // Return whether the queue is empty
-  def isEmpty: Boolean = {
+  def isEmpty: Boolean = synchronized {
     queue isEmpty
   }
 
@@ -25,12 +25,12 @@ class TransactionQueue {
   }
 
   // Return the first element from the queue without removing it
-  def peek: Transaction = {
+  def peek: Transaction = synchronized {
     queue front
   }
 
   // Return an iterator to allow you to iterate over the queue
-  def iterator: Iterator[Transaction] = {
+  def iterator: Iterator[Transaction] = synchronized {
     queue iterator
   }
 }
@@ -44,23 +44,42 @@ class Transaction(val transactionsQueue: TransactionQueue,
 
   var status: TransactionStatus.Value = TransactionStatus.PENDING
 
+  var attempts = allowedAttemps
+
   override def run: Unit = {
 
-    def doTransaction() = {
-      from withdraw amount
-      to deposit amount
-    }
-
-    if (from.uid < to.uid) from synchronized {
-      to synchronized {
-        doTransaction
+    status synchronized {
+      
+      if (attempts <= 0) {
+        status = TransactionStatus.FAILED
+        return
       }
-    } else to synchronized {
-      from synchronized {
-        doTransaction
-      }
-    }
 
+      def doTransaction() = {
+        from withdraw amount
+        to deposit amount
+      }
+
+      try { 
+
+        if (from.uid < to.uid) from synchronized {
+          to synchronized {
+            doTransaction
+          }
+        } else to synchronized {
+          from synchronized {
+            doTransaction
+          }
+        }
+
+        status = TransactionStatus.SUCCESS
+
+      } catch {
+        case e: Exception => {}
+      }
+
+      attempts -= 1
+    }
     // Extend this method to satisfy new requirements.
 
   }
