@@ -39,7 +39,7 @@ class Bank(val allowedAttempts: Integer = 3) {
             }
           }
         }
-        Thread.sleep(3);
+        Thread.sleep(5);
       }
     }
   }
