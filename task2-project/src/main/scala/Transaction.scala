@@ -71,14 +71,12 @@ class Transaction(val transactionsQueue: TransactionQueue,
         return
 
       } catch {
-        case e: Exception => {}
+        case e: Exception => {
+          status = TransactionStatus.FAILED
+        }
       }
 
       attempts -= 1
-
-      if (attempts <= 0) {
-        status = TransactionStatus.FAILED
-      }
     }
   }
 }

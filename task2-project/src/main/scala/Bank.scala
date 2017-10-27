@@ -35,6 +35,10 @@ class Bank(val allowedAttempts: Integer = 3) {
 
             t.status match {
               case TransactionStatus.PENDING => executorContext.execute(t)
+              case TransactionStatus.FAILED if t.attempts > 0 => {
+                t.status = TransactionStatus.PENDING
+                transactionsQueue.push(transactionsQueue.pop)
+              }
               case _ => processedTransactions.push(transactionsQueue.pop)
             }
           }
