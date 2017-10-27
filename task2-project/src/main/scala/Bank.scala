@@ -26,6 +26,7 @@ class Bank(val allowedAttempts: Integer = 3) {
     val process = Main.thread {
 
       while(true) {
+        
         if (! transactionsQueue.isEmpty) {
 
           val t = transactionsQueue peek
