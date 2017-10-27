@@ -48,12 +48,7 @@ class Transaction(val transactionsQueue: TransactionQueue,
 
   override def run: Unit = {
 
-    status synchronized {
-      
-      if (attempts <= 0) {
-        status = TransactionStatus.FAILED
-        return
-      }
+    synchronized {
 
       def doTransaction() = {
         from withdraw amount
@@ -73,14 +68,17 @@ class Transaction(val transactionsQueue: TransactionQueue,
         }
 
         status = TransactionStatus.SUCCESS
+        return
 
       } catch {
         case e: Exception => {}
       }
 
       attempts -= 1
-    }
-    // Extend this method to satisfy new requirements.
 
+      if (attempts <= 0) {
+        status = TransactionStatus.FAILED
+      }
+    }
   }
 }

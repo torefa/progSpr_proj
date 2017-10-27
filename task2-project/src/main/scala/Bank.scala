@@ -30,7 +30,7 @@ class Bank(val allowedAttempts: Integer = 3) {
 
           val t = transactionsQueue peek
 
-          t.status synchronized {
+          t synchronized {
 
             t.status match {
               case TransactionStatus.PENDING => executorContext.execute(t)
@@ -38,6 +38,7 @@ class Bank(val allowedAttempts: Integer = 3) {
             }
           }
         }
+        Thread.sleep(3);
       }
     }
   }
