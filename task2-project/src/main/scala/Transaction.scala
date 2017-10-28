@@ -71,9 +71,8 @@ class Transaction(val transactionsQueue: TransactionQueue,
         return
 
       } catch {
-        case e: Exception => {
+        case _: NoSufficientFundsException | _: IllegalAmountException =>
           status = TransactionStatus.FAILED
-        }
       }
 
       attempts -= 1
