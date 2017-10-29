@@ -23,18 +23,16 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
   }
 
   def getTransactions: List[Transaction] = {
-    // Should return a list of all Transaction-objects stored in transactions
+    // Return a list of all Transaction-objects stored in transactions
     transactions.values.toList
   }
 
   def allTransactionsCompleted: Boolean = {
-    // Should return whether all Transaction-objects in transactions are completed
+    // Return whether all Transaction-objects in transactions are completed
     getTransactions.foldLeft(true)(_ && _.isCompleted)
   }
 
-  /* TODO: !! jeg fjernet synchronized keywordet fra de tre metodene, fordi jeg tror ikke det trengs.*/
-
-  def withdraw(amount: Double): Unit = synchronized {
+  def withdraw(amount: Double): Unit = {
     balance.amount = balance.amount - amount match {
       case b if b < 0.0 => throw new NoSufficientFundsException("Not enough money in account")
       case b if b > balance.amount => throw new IllegalAmountException("Negative withdrawal amount")
@@ -42,17 +40,17 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
     }
   }
 
-  def deposit(amount: Double): Unit = synchronized {
+  def deposit(amount: Double): Unit = {
     balance.amount = balance.amount + amount match {
       case b if b < balance.amount => throw new IllegalAmountException("Negative withdrawal amount")
       case b => b
     }
   }
 
-  def getBalanceAmount: Double = synchronized { balance.amount }
+  def getBalanceAmount: Double = { balance.amount }
 
   def sendTransactionToBank(t: Transaction): Unit = {
-    // Should send a message containing t to the bank of this account
+    //Send a message containing t to the bank of this account
     BankManager.findBank(bankId) ! t
   }
 
@@ -88,7 +86,7 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
       // Process receipt
       if (transactions.contains(transactionId)) {
 
-        /*Her er det ikke vits å hente t fra mappen, fordi vi sender rundt referanser av Transaksjoner.
+        /*TODO: Her er det ikke vits å hente t fra mappen, fordi vi sender rundt referanser av Transaksjoner.
          men kan være greit å late det er pass by value, tror det er meningen,
          spesielt hvis man tenker på hvordan et bank-system med flere banker egentlig ville vært*/
 
