@@ -17,7 +17,7 @@ class Account(val bank: Bank, initialBalance: Double) {
 
   def deposit(amount: Double): Unit = synchronized {
     balance.amount = balance.amount + amount match {
-      case b if b < balance.amount => throw new IllegalAmountException("Negative withdrawal amount")
+      case b if b < balance.amount => throw new IllegalAmountException("Negative deposit amount")
       case b => b
     }
   }

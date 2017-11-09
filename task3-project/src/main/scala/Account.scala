@@ -86,10 +86,6 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
       // Process receipt
       if (transactions.contains(transactionId)) {
 
-        /*TODO: Her er det ikke vits å hente t fra mappen, fordi vi sender rundt referanser av Transaksjoner.
-         men kan være greit å late det er pass by value, tror det er meningen,
-         spesielt hvis man tenker på hvordan et bank-system med flere banker egentlig ville vært*/
-
         val t = transactions(transactionId) //transaction
         t.status = transaction.status
         t.receiptReceived = true
